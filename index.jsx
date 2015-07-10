@@ -2,16 +2,14 @@
 
 import React, {PropTypes} from 'react';
 
-function radio(name, selectedValue, onChange) {
+function prebind(cls, earlyBound) {
   return React.createClass({
     render: function() {
-      return (
-        <input
-          {...this.props}
-          type="radio"
-          name={name}
-          checked={this.props.value === selectedValue}
-          onChange={onChange.bind(null, this.props.value)} />
+      let { children, ...lateBound } = this.props
+      return React.createElement(
+        cls,
+        { ...earlyBound, ...lateBound },
+        children
       );
     }
   });
@@ -19,18 +17,15 @@ function radio(name, selectedValue, onChange) {
 
 export default React.createClass({
   propTypes: {
-    name: PropTypes.string,
-    selectedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    onChange: PropTypes.func,
-    children: PropTypes.func,
+    cls: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(React.cls),
+    ]).isRequired,
+    children: PropTypes.func.isRequired,
   },
 
   render: function() {
-    let {name, selectedValue, onChange, children} = this.props;
-    return (
-      <div>
-        {children && children(radio(name, selectedValue, onChange))}
-      </div>
-    );
+    let { children, cls, ...earlyBound } = this.props;
+    return children(prebind(cls, earlyBound))
   }
 });

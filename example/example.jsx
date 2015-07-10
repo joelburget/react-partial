@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import RadioGroup from '../index.jsx';
+import Partial from '../index.jsx';
 
 let App = React.createClass({
   getInitialState: function() {
@@ -17,26 +17,40 @@ let App = React.createClass({
   },
 
   render: function() {
+    const { selectedValue } = this.state;
+
     return (
       <div>
-        <RadioGroup
-          name="fruit"
-          selectedValue={this.state.selectedValue}
-          onChange={this.handleChange}>
+        <Partial
+          cls='input'
+          type="radio"
+          name="fruit">
           {Radio => (
             <div>
               <label>
-                <Radio value="apple" />Apple
+                <Radio
+                  value="apple"
+                  checked={selectedValue === "apple"}
+                  onChange={() => this.handleChange("apple")} />
+                Apple
               </label>
               <label>
-                <Radio value="orange" />Orange
+                <Radio
+                  value="orange"
+                  checked={selectedValue === "orange"}
+                  onChange={() => this.handleChange("orange")} />
+                Orange
               </label>
               <label>
-                <Radio value="watermelon" />Watermelon
+                <Radio
+                  value="watermelon"
+                  checked={selectedValue === "watermelon"}
+                  onChange={() => this.handleChange("watermelon")} />
+                Watermelon
               </label>
             </div>
           )}
-        </RadioGroup>
+        </Partial>
       </div>
     );
   }
